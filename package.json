@@ -1,0 +1,22 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p $PUBLIC_PORT",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "mongoose": "^6.1.8",
+    "next": "^12.0.7",
+    "react": "^18.0.0-rc.0",
+    "react-dom": "^18.0.0-rc.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.16"
+  }
+}
