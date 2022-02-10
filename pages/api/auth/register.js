@@ -14,8 +14,10 @@ export default async function handler(req, res) {
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
+  // récupère les données du client
   const { rollNo, name, classes, password } = req.body;
 
+  // vérification si étudiant deja existant
   const existingStudent = await db
     .collection("students")
     .find({ rollNo: rollNo })
@@ -37,9 +39,10 @@ export default async function handler(req, res) {
       classes: classes,
       password: hashPassword,
     });
-    const accessToken = jwt.sign(rollNo, process.env.ACCESS_TOKEN_SECRET); //on crée un JWT
+    // création du JWT (Json Web Token)
+    const accessToken = jwt.sign(rollNo, process.env.ACCESS_TOKEN_SECRET);
     console.log("access token", accessToken);
 
-    res.status(200).send({ error: false });
+    res.status(200).send({ error: false, accessToken: accessToken });
   }
 }

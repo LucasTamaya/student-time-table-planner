@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 const axios = require("axios");
 
 export default function Login() {
   const [rollNo, setRollNo] = useState("");
   const [password, setPassword] = useState("");
   const [logMessage, setLogMessage] = useState("");
+
+  const router = useRouter();
 
   function handleForm(event) {
     event.preventDefault();
@@ -14,9 +17,10 @@ export default function Login() {
         password: password,
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         if (res.data.error === false) {
           setLogMessage("Successfull connexion");
+          router.push("/courses")
         } else {
           setLogMessage("Something went wrong");
         }
@@ -49,9 +53,7 @@ export default function Login() {
             value="Register"
           />
         </form>
-        {logMessage && (
-          <p>{logMessage}</p>
-        )}
+        {logMessage && <p>{logMessage}</p>}
       </div>
     </>
   );

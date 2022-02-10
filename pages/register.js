@@ -10,6 +10,7 @@ export default function Register() {
 
   function handleForm(event) {
     event.preventDefault();
+    // enregistre nouvel etudiant
     axios
       .post("http://localhost:3000/api/auth/register", {
         rollNo: rollNo,
@@ -18,8 +19,12 @@ export default function Register() {
         password: password,
       })
       .then((res) => {
+        console.log(res)
+        // si pas d'erreur, message de connexion réussi + enregistrement du JWT dans le localStorage
         if (res.data.error === false) {
           setLogMessage("Successfull connexion");
+          localStorage.setItem("accessToken", res.data.accessToken)
+          // sinon, message d'erreur
         } else {
           setLogMessage("Something went wrong");
         }
