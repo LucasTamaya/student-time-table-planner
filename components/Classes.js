@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Classes = ({data}) => {
 
-    const [classId, setClassId] = useState("")
+    const [obj, setObj] = useState([])
+
+    useEffect(() => {
+        console.log(obj)
+        console.log(typeof obj)
+    }, [obj])
 
     return ( 
         <>
@@ -11,11 +16,17 @@ const Classes = ({data}) => {
                     <h1>{classe.faculty} Class</h1>
                     <p>{classe.day}</p>
                     <p>From {classe.from} to {classe.to} </p>
-                    <button className="border border-black p-2 rounded-xl" onClick={() => setClassId(classe._id)}>Add this class</button>
+                    <button className="border border-black p-2 rounded-xl" onClick={() => setObj([...obj, classe])}>Add this class</button>
                 </div>
             ))}
 
-            {classId && <p>{classId}</p>}
+            {obj && obj.map((x) => (
+                <div key={x._id}>
+                    <p>{x._day}</p>
+                    <p>{x._from}</p>
+                    <p>{x._to}</p>
+                </div>
+            ))}
         </>
      );
 }

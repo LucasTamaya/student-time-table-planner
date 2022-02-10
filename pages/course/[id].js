@@ -1,5 +1,4 @@
 import Classes from "../../components/Classes";
-import { connectToDatabase } from "../../util/mongodb";
 const axios = require("axios");
 
 const Course = ({ data }) => {
@@ -13,22 +12,13 @@ const Course = ({ data }) => {
 export default Course;
 
 export const getServerSideProps = async (context) => {
-  const { db } = await connectToDatabase();
+  const res = await axios.get(
+    `http://localhost:3000/api/classes/${context.params.id}`
+  );
 
-  const courseCode = context.params.id;
+  console.log(res.data)
 
-  const res = await db
-    .collection("classes")
-    .find({ courseCode: courseCode })
-    .toArray();
-
-  const data = JSON.parse(JSON.stringify(res));
-
-  if (data) {
-    console.log(data);
-  } else {
-    console.log("error in fetch");
-  }
+  const data = await res.data;
 
   return {
     props: {
