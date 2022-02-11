@@ -10,7 +10,8 @@ const Classes = ({ data }) => {
       )}`,
       {
         classId: id,
-      }
+      },
+      { headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` } }
     );
     const res = await newClass.data.msg;
     console.log(res);
@@ -20,7 +21,10 @@ const Classes = ({ data }) => {
     <>
       {data &&
         data.map((classe) => (
-          <div className="border border-black rounded-md w-72 h-72 mx-auto my-10 p-4 flex flex-col items-center justify-center gap-y-5">
+          <div
+            className="border border-black rounded-md w-72 h-72 mx-auto my-10 p-4 flex flex-col items-center justify-center gap-y-5"
+            key={classe._id}
+          >
             <h1>{classe.faculty} Class</h1>
             <p>{classe.day}</p>
             <p>

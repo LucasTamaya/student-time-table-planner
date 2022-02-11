@@ -34,16 +34,23 @@ export default async function handler(req, res) {
     // récupération id de la classe
     const { classId } = req.body;
 
+    console.log(req)
+
     const authenticatedStudent = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
 
     if(authenticatedStudent){
         console.log("rollNo:", authenticatedStudent)
-        const newClass = await db.collection("students").find({rollNo: authenticatedStudent}).updateOne({classes: {$set: {classes: classId}}})
-        if(newClass){
-            console.log("class ajouter avec succes")
+
+        const filter = {rollNo: authenticatedStudent}
+
+        const newClass = {$push: {classes: classId}}
+
+        const updateClass = await db.collection("students").updateOne(filter, newClass)
+        if(updateClass){
+            console.log("class update avec succes")
             res.status(200).send({msg: "class ajouter"})
         } else {
-            res.status(200).send({msg: "erreur ajout de nouvel classe"})
+            res.status(200).send({msg: "erreur update classe"})
         }
     } else {
         console.log("JWT error signature")

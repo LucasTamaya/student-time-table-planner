@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 const axios = require("axios");
 
@@ -7,6 +8,8 @@ export default function Register() {
   const [password, setPassword] = useState("");
 
   const [logMessage, setLogMessage] = useState("");
+
+  const router = useRouter();
 
   function handleForm(event) {
     event.preventDefault();
@@ -19,11 +22,12 @@ export default function Register() {
         password: password,
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         // si pas d'erreur, message de connexion réussi + enregistrement du JWT dans le localStorage
         if (res.data.error === false) {
           setLogMessage("Successfull connexion");
-          localStorage.setItem("accessToken", res.data.accessToken)
+          localStorage.setItem("accessToken", res.data.accessToken);
+          router.push("/courses");
           // sinon, message d'erreur
         } else {
           setLogMessage("Something went wrong");
@@ -66,9 +70,7 @@ export default function Register() {
           />
         </form>
 
-        {logMessage && (
-          <p>{logMessage}</p>
-        )}
+        {logMessage && <p>{logMessage}</p>}
       </div>
     </>
   );

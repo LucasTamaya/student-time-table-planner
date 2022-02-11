@@ -20,6 +20,7 @@ export default function Login() {
         console.log(res);
         if (res.data.error === false) {
           setLogMessage("Successfull connexion");
+          localStorage.setItem("accessToken", res.data.accessToken)
           router.push("/courses")
         } else {
           setLogMessage("Something went wrong");
