@@ -1,9 +1,22 @@
 import { useEffect, useState } from "react";
 const axios = require("axios");
 
-const Classes = ({ data }) => {
+const Classes = ({ data, selectedClasses }) => {
   // const [obj, setObj] = useState([]) onClick={() => setObj([...obj, classe])}
+  const [newClasses, setNewClasses] = useState([]);
+
+  useEffect(() => {
+    // récupère les classes deaj selectionnées
+    fetch(`http://localhost:3000/api/student/${localStorage.getItem("accessToken")}`)
+      .then(res => res.json())
+      .then(data => setNewClasses(data))
+      .catch(err => console.log(err))
+  }, []);
+
   const addClass = async (id) => {
+
+    setNewClasses([...newClasses, id])
+    
     const newClass = await axios.post(
       `http://localhost:3000/api/classes/${localStorage.getItem(
         "accessToken"
@@ -11,14 +24,32 @@ const Classes = ({ data }) => {
       {
         classId: id,
       },
-      { headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
     );
-    const res = await newClass.data.msg;
-    console.log(res);
+    // const res = await newClass.data.msg;
+    if (newClass.data.msg === false) {
+      console.log("error dans l'updata de la classe");
+    } else {
+      console.log("succes");
+    }
   };
 
   return (
     <>
+      {newClasses.length === 0 ? (
+        <p>No classes selected yet</p>
+      ) : (
+        newClasses.map((classes) => (
+          <ul>
+            <li>{classes}</li>
+          </ul>
+        ))
+      )}
+      {selectedClasses && selectedClasses.map((x) => console.log(x))}
       {data &&
         data.map((classe) => (
           <div

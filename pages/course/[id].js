@@ -16,8 +16,6 @@ export const getServerSideProps = async (context) => {
     `http://localhost:3000/api/classes/${context.params.id}`
   );
 
-  console.log(res.data)
-
   const data = await res.data;
 
   return {

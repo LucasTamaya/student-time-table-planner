@@ -48,9 +48,9 @@ export default async function handler(req, res) {
         const updateClass = await db.collection("students").updateOne(filter, newClass)
         if(updateClass){
             console.log("class update avec succes")
-            res.status(200).send({msg: "class ajouter"})
+            res.status(200).send({error: false})
         } else {
-            res.status(200).send({msg: "erreur update classe"})
+            res.status(200).send({error: true})
         }
     } else {
         console.log("JWT error signature")
