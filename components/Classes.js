@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
 const axios = require("axios");
 
-const Classes = ({ data, selectedClasses }) => {
+const Classes = ({ data }) => {
   // const [obj, setObj] = useState([]) onClick={() => setObj([...obj, classe])}
-  const [newClasses, setNewClasses] = useState([]);
+  const [currentClasses, setCurrentClasses] = useState([]);
 
   useEffect(() => {
     // récupère les classes deaj selectionnées
-    fetch(`http://localhost:3000/api/student/${localStorage.getItem("accessToken")}`)
-      .then(res => res.json())
-      .then(data => setNewClasses(data))
-      .catch(err => console.log(err))
+    fetch(
+      `http://localhost:3000/api/student/${localStorage.getItem("accessToken")}`
+    )
+      .then((res) => res.json())
+      .then((data) => setCurrentClasses(data))
+      .catch((err) => console.log(err));
   }, []);
 
-  const addClass = async (id) => {
+  const selectedClasses = async (id) => {
+    // si on tente d'ajouter une classe déja sélectionné
+    if (currentClasses.includes(id)) {
+      alert("You have already selected this class");
+      // si la classe n'a pas encore été sélectionné, on l'ajoute au tableau de classes à ajouter
+    } else {
+      setCurrentClasses([...currentClasses, id]);
+      console.log(currentClasses)
+    }
+  };
 
-    setNewClasses([...newClasses, id])
-    
-    const newClass = await axios.post(
+  const addToDataBase = async () => {
+    const addSelectedClasses = await axios.post(
       `http://localhost:3000/api/classes/${localStorage.getItem(
         "accessToken"
       )}`,
       {
-        classId: id,
+        currentClasses: currentClasses,
       },
       {
         headers: {
@@ -31,8 +41,8 @@ const Classes = ({ data, selectedClasses }) => {
       }
     );
     // const res = await newClass.data.msg;
-    if (newClass.data.msg === false) {
-      console.log("error dans l'updata de la classe");
+    if (addSelectedClasses.data.msg === false) {
+      console.log("error dans l'update de la classe");
     } else {
       console.log("succes");
     }
@@ -40,16 +50,23 @@ const Classes = ({ data, selectedClasses }) => {
 
   return (
     <>
-      {newClasses.length === 0 ? (
+      {currentClasses.length === 0 ? (
         <p>No classes selected yet</p>
       ) : (
-        newClasses.map((classes) => (
-          <ul>
-            <li>{classes}</li>
-          </ul>
-        ))
+        <div>
+          {currentClasses.map((classes) => (
+            <ul>
+              <li>{classes}</li>
+            </ul>
+          ))}
+          <button
+            className="border border-black p-2 rounded"
+            onClick={addToDataBase}
+          >
+            Add classes
+          </button>
+        </div>
       )}
-      {selectedClasses && selectedClasses.map((x) => console.log(x))}
       {data &&
         data.map((classe) => (
           <div
@@ -63,9 +80,9 @@ const Classes = ({ data, selectedClasses }) => {
             </p>
             <button
               className="border border-black p-2 rounded-xl"
-              onClick={() => addClass(classe._id)}
+              onClick={() => selectedClasses(classe._id)}
             >
-              Add this class
+              Select this class
             </button>
           </div>
         ))}

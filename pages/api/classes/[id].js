@@ -28,13 +28,12 @@ export default async function handler(req, res) {
     }
     // sinon, si méthode POST
   } else {
+    console.log(req.body)
     //   récupération accessToken
     const accessToken = req.query.id;
 
     // récupération id de la classe
-    const { classId } = req.body;
-
-    console.log(req)
+    const { currentClasses } = req.body;
 
     const authenticatedStudent = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
 
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
 
         const filter = {rollNo: authenticatedStudent}
 
-        const newClass = {$push: {classes: classId}}
+        const newClass = {$set: {classes: currentClasses}}
 
         const updateClass = await db.collection("students").updateOne(filter, newClass)
         if(updateClass){
