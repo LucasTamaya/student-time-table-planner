@@ -2,6 +2,7 @@ const axios = require("axios");
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Navbar from "../components/Navbar";
 
 export default function MyClasses() {
   const [myClasses, setMyClasses] = useState();
@@ -39,6 +40,7 @@ export default function MyClasses() {
 
   return (
     <>
+    <Navbar />
       <div>
         <h1 className="text-2xl font-bold">My Classes</h1>
         <Link href="/courses">View all courses</Link>
