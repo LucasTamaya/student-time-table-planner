@@ -14,11 +14,16 @@ export default function MyClasses() {
   };
 
   const deleteClass = async (classeId) => {
-    const deleteClass = await axios.delete(`http://localhost:3000/api/class/${localStorage.getItem("accessToken")}/${classeId}`);
-    if(deleteClass.status === 200){
-      refreshData();
-    }
-  }; 
+    // créer une nouvelle liste de classe avec la classe supprimer en moins
+    const updateClasses = myClasses.filter((x) => x._id != classeId);
+    // met a jour la liste des classes à afficher coté frontend
+    setMyClasses(updateClasses);
+    const deleteClass = await axios.delete(
+      `http://localhost:3000/api/class/${localStorage.getItem(
+        "accessToken"
+      )}/${classeId}`
+    );
+  };
 
   useEffect(() => {
     fetch(
@@ -51,7 +56,12 @@ export default function MyClasses() {
               <p>
                 From {classe.from} to {classe.to}
               </p>
-              <button className="bg-red-500 text-white px-3 py-1 rounded-xl cursor-pointer" onClick={() => deleteClass(classe._id)}>Delete</button>
+              <button
+                className="bg-red-500 text-white px-3 py-1 rounded-xl cursor-pointer"
+                onClick={() => deleteClass(classe._id)}
+              >
+                Delete
+              </button>
             </div>
           ))}
       </div>
