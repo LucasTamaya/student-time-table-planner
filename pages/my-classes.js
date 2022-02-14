@@ -1,12 +1,23 @@
 const axios = require("axios");
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function MyClasses() {
   const [myClasses, setMyClasses] = useState();
   const [loading, setLoading] = useState(true);
 
-  const deleteClass = async (id) => {
+  const router = useRouter();
+  // fonction a fin de rafraîchir nos props à chaque ajout ou suppression
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
+  const deleteClass = async (classeId) => {
+    const deleteClass = await axios.delete(`http://localhost:3000/api/class/${localStorage.getItem("accessToken")}/${classeId}`);
+    if(deleteClass.status === 200){
+      refreshData();
+    }
   }; 
 
   useEffect(() => {
@@ -25,6 +36,7 @@ export default function MyClasses() {
     <>
       <div>
         <h1 className="text-2xl font-bold">My Classes</h1>
+        <Link href="/courses">View all courses</Link>
 
         {loading && <h1>Loading data ...</h1>}
 

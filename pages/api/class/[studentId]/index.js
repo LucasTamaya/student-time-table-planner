@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../../../util/mongodb";
+import {connectToDatabase} from "../../../../util/mongodb"
 import NextCors from "nextjs-cors";
 // import { ObjectId } from "mongodb";
 const mongodb = require("mongodb");
@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
-  const accessToken = req.query.id;
+  const accessToken = req.query.studentId;
   const authenticatedStudent = jwt.verify(
     accessToken,
     process.env.ACCESS_TOKEN_SECRET
@@ -45,7 +45,6 @@ export default async function handler(req, res) {
           }
         });
       });
-      console.log(result);
       //   on renvoit le tableau au front
       return res.status(200).json(result);
     } else {
@@ -59,12 +58,3 @@ export default async function handler(req, res) {
     return res.status(500);
   }
 }
-/*
-var reduced = options.reduce(function(filtered, option) {
-  if (option.assigned) {
-     var someNewValue = { name: option.name, newProperty: 'Foo' }
-     filtered.push(someNewValue);
-  }
-  return filtered;
-}, []);
-*/
