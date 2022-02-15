@@ -68,8 +68,8 @@ const Classes = ({ data }) => {
       <PopUp popUp={popUp} setPopUp={setPopUp}/>
       {loading && (
         <div className="flex justify-center items-center gap-x-2">
-          <h2 className="text-center text-2xl font-bold">Loading</h2>
-          <AutorenewIcon className="animate-spin" />
+          <h2 className="text-center text-4xl font-bold">Loading</h2>
+          <AutorenewIcon className="animate-spin text-4xl" />
         </div>
       )}
 

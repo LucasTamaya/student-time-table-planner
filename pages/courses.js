@@ -7,7 +7,7 @@ export default function Courses({ data }) {
     <>
       <Navbar />
       <div>
-        <h1 className="text-4xl text-center font-bold">All Courses</h1>
+        <h1 className="text-2xl text-center font-bold">All Courses</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 md lg:grid-cols-3">
           {data &&
             data.map((courses) => (

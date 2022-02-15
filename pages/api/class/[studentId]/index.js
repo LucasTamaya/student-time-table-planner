@@ -46,6 +46,7 @@ export default async function handler(req, res) {
         });
       });
       //   on renvoit le tableau au front
+      console.log(result)
       return res.status(200).json(result);
     } else {
       console.log("erreur in the fetch");
