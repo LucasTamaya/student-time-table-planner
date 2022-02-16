@@ -9,6 +9,8 @@ const Classes = ({ data }) => {
   const [currentClasses, setCurrentClasses] = useState([]); //tableau vide sinon
   const [loading, setLoading] = useState(true);
   const [popUp, setPopUp] = useState(false);
+  
+  const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
   useEffect(() => {
     // récupère les classes deja selectionnées dans la base donnée
@@ -65,7 +67,7 @@ const Classes = ({ data }) => {
   return (
     <>
       <Navbar />
-      <PopUp popUp={popUp} setPopUp={setPopUp}/>
+      <PopUp popUp={popUp} setPopUp={setPopUp} />
       {loading && (
         <div className="flex justify-center items-center gap-x-2">
           <h2 className="text-center text-4xl font-bold">Loading</h2>
@@ -99,17 +101,18 @@ const Classes = ({ data }) => {
       )}
       {data && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {console.log(data)}
           {data.map((classe) => (
             <div
               className="bg-blue-500 rounded-md w-72 h-72 mx-auto my-10 p-4 flex flex-col items-center justify-center gap-y-5 hover:shadow-2xl shadow-black-900"
               key={classe._id}
             >
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-white text-center">
                 {classe.faculty} Class
               </h1>
-              <p className="text-white">{classe.day}</p>
+              <p className="text-white">{week[new Date(classe.start).getDay()]}</p>
               <p className="text-white">
-                From {classe.from} to {classe.to}{" "}
+                From {new Date(classe.start).getHours()}am to {new Date(classe.end).getHours()}am
               </p>
               <button
                 className="transition ease-out border border-white text-white p-2 rounded-xl hover:scale-105"

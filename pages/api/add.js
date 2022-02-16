@@ -14,14 +14,21 @@ export default async function handler(req, res) {
   });
 
   const newClass = await db.collection("classes").insertOne({
-    courseCode: "62040ce41155f125a51e2859",
-    faculty: "Economy",
-    day: "Thursday",
-    from: "10am",
-    to: "11am",
+    courseCode: "62040c6a1155f125a51e2857",
+    faculty: "Vocabulary",
+    start: new Date(2022, 0, 5, 13),
+    end: new Date(2022, 0, 5, 14)
   });
 
-  console.log(newClass);
+  // console.log(newClass);
+  const date = new Date(2022, 0, 4, 7)
+
+  const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+  const hour = date.getHours();
+
+  const day = week[date.getDay()]
+
 
   res.json(newClass)
 }

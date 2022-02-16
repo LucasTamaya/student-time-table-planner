@@ -103,7 +103,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.5.tgz"
   "version" "0.7.5"
 
-"@emotion/react@^11.7.1":
+"@emotion/react@^11.0.0-rc.0", "@emotion/react@^11.4.1", "@emotion/react@^11.5.0", "@emotion/react@^11.7.1":
   "integrity" "sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw=="
   "resolved" "https://registry.npmjs.org/@emotion/react/-/react-11.7.1.tgz"
   "version" "11.7.1"
@@ -132,7 +132,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.1.0.tgz"
   "version" "1.1.0"
 
-"@emotion/styled@^11.6.0":
+"@emotion/styled@^11.3.0", "@emotion/styled@^11.6.0":
   "integrity" "sha512-mxVtVyIOTmCAkFbwIp+nCjTXJNgcz4VWkOYQro87jE2QBTydnkiYusMrRGFtzuruiGK4dDaNORk4gH049iiQuw=="
   "resolved" "https://registry.npmjs.org/@emotion/styled/-/styled-11.6.0.tgz"
   "version" "11.6.0"
@@ -193,7 +193,7 @@
   dependencies:
     "@babel/runtime" "^7.17.0"
 
-"@mui/material@^5.4.1":
+"@mui/material@^5.0.0", "@mui/material@^5.4.1":
   "integrity" "sha512-SxAT43UAjFTBBpJrN+oGrv40xP1uCa5Z49NfHt3m93xYeFzbxKOk0V9IKU7zlUjbsaVQ0i+o24yF5GULZmynlA=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.4.1.tgz"
   "version" "5.4.1"
@@ -331,7 +331,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=16.9.11":
+"@types/react@*", "@types/react@^16.8.6 || ^17.0.0", "@types/react@>=16.9.11":
   "integrity" "sha512-UVavlfAxDd/AgAacMa60Azl7ygyQNRwC/DsHZmKgNvPmRR5p70AJ5Q9EAmL2NWOJmeV+vVUI4IAP7GZrN8h8Ug=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.39.tgz"
   "version" "17.0.39"
@@ -439,7 +439,7 @@
   "resolved" "https://registry.npmjs.org/arg/-/arg-5.0.1.tgz"
   "version" "5.0.1"
 
-"autoprefixer@^10.4.2":
+"autoprefixer@^10.0.2", "autoprefixer@^10.4.2":
   "integrity" "sha512-9fOPpHKuDW1w/0EKfRmVnxTDt8166MAnLI3mgZ1JCnhNtYWxcJ6Ud5CO/AVOZi/AvFa8DY9RTy3h3+tFBlrrdQ=="
   "resolved" "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.2.tgz"
   "version" "10.4.2"
@@ -1222,7 +1222,7 @@
   "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.2.0.tgz"
   "version" "3.2.0"
 
-"next@^12.0.7":
+"next@^12.0.7", "next@^8.1.1-canary.54 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0":
   "integrity" "sha512-1y3PpGzpb/EZzz1jgne+JfZXKAVJUjYXwxzrADf/LWN+8yi9o79vMLXpW3mevvCHkEF2sBnIdjzNn16TJrINUw=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.0.10.tgz"
   "version" "12.0.10"
@@ -1390,7 +1390,7 @@
   "resolved" "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
   "version" "4.2.0"
 
-"postcss@^8.4.5", "postcss@8.4.5":
+"postcss@^8.0.9", "postcss@^8.1.0", "postcss@^8.2.14", "postcss@^8.3.3", "postcss@^8.4.5", "postcss@8.4.5":
   "integrity" "sha512-jBDboWM8qpaqwkMwItqTQTiFikhs/67OYVvblFFTM7MrZjt6yMKd6r2kgXizEbTTljacm4NldIlZnhbjr84QYg=="
   "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.5.tgz"
   "version" "8.4.5"
@@ -1440,7 +1440,7 @@
     "react-overlays" "^4.1.1"
     "uncontrollable" "^7.0.0"
 
-"react-dom@^18.0.0-rc.0":
+"react-dom@^16.6.1 || ^17", "react-dom@^17.0.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@^18.0.0-rc.0", "react-dom@>=16.3.0", "react-dom@>=16.6.0":
   "integrity" "sha512-tdD1n0svTndHBQvVAq/f2Kx7FgQ30CpSLp87/neQKAHPW5WtdgW1sBSwmFAcMQOrmstTuP0M+zRlH86f9kMX/A=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.0.0-rc.0.tgz"
   "version" "18.0.0-rc.0"
@@ -1493,7 +1493,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@^18.0.0-rc.0":
+"react@^16.6.1 || ^17", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0-rc.0", "react@>= 16.8.0 || 17.x.x || 18.x.x", "react@>=15.0.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8.0":
   "integrity" "sha512-PawosMBgF8k5Nlc3++ibzjFqPvo1XKv80MNtVYqz3abHHB2w3IpU65sSdSmBd2ooCwVhcp9b1vkx/twqhakNtA=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.0.0-rc.0.tgz"
   "version" "18.0.0-rc.0"

@@ -8,6 +8,8 @@ export default function MyClasses() {
   const [myClasses, setMyClasses] = useState();
   const [loading, setLoading] = useState(true);
 
+  const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
   const deleteClass = async (classeId) => {
     // créer une nouvelle liste de classe avec la classe supprimer en moins
     const updateClasses = myClasses.filter((x) => x._id != classeId);
@@ -53,9 +55,9 @@ export default function MyClasses() {
                 className="bg-blue-500 w-72 h-72 mx-auto p-4 flex flex-col justify-center items-center gap-y-4 items-center rounded hover:shadow-2xl shadow-black-900"
               >
                 <h2 className="text-white text-xl font-bold">{classe.faculty} Class</h2>
-                <p className="text-white">{classe.day}</p>
+                <p className="text-white">{week[new Date(classe.start).getDay()]}</p>
                 <p className="text-white">
-                  From {classe.from} to {classe.to}
+                  From {new Date(classe.start).getHours()}am to {new Date(classe.end).getHours()}am
                 </p>
                 <button
                   className="bg-red-400 text-white px-3 py-2 rounded-2xl cursor-pointer hover:bg-red-500"
@@ -68,7 +70,7 @@ export default function MyClasses() {
           </div>
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
