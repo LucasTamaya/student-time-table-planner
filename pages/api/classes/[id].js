@@ -4,23 +4,38 @@ const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
+
   console.log(req);
+
+  const token = req.headers["x-access-token"];
 
   //   si méthode GET
   if (req.method === "GET") {
-    console.log("test");
-    const courseCode = req.query.id;
+    try {
+      const authenticatedStudent = jwt.verify(
+        token,
+        process.env.ACCESS_TOKEN_SECRET
+      );
 
-    const classes = await db
-      .collection("classes")
-      .find({ courseCode: courseCode })
-      .toArray();
+      const courseCode = req.query.id;
 
-    if (classes) {
-      res.status(200).json(classes);
-    } else {
-      console.log("error in fetch");
-      res.status(500);
+      const classes = await db
+        .collection("classes")
+        .find({ courseCode: courseCode })
+        .toArray();
+
+      // si erreur pendant le fetch
+      if (!classes) {
+        res.send({ message: "Fetch error" });
+      }
+      // si pas d'erreur on renvoit la data au frontend
+      if (classes) {
+        res.status(200).json(classes);
+      }
+      // si erreur avec JWT
+    } catch (err) {
+      console.log(err);
+      return res.send({ message: "JWT error" });
     }
   }
 

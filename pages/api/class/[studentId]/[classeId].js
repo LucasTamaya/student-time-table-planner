@@ -7,18 +7,17 @@ const jwt = require("jsonwebtoken");
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
   //   JWT
-  const accessToken = req.query.studentId;
-  //   id de la classe a supprimer
-  const classeId = req.query.classeId;
+  const token = req.headers["x-access-token"];
 
-  //   vérification du JWt
-  const authenticatedStudent = jwt.verify(
-    accessToken,
-    process.env.ACCESS_TOKEN_SECRET
-  );
+  try {
+    const authenticatedStudent = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-  //   si JWT valide
-  if (authenticatedStudent) {
+    //   id de la classe a supprimer
+    const classeId = req.query.classeId;
+
     //   retire la classe du tableau
     const deleteClass = await db.collection("students").updateOne(
       { rollNo: authenticatedStudent },
@@ -28,16 +27,18 @@ export default async function handler(req, res) {
         },
       }
     );
-    // si suppression réussi, on renvoit une nouvelle version des classes à afficher
-    if(deleteClass){
-        console.log(deleteClass)
-        return res.status(200)
-    }
-  }
 
-  // si JWT non valide
-  if (!authenticatedStudent) {
-    console.log("erreur with the JWT");
-    return res.status(500);
+    if (!deleteClass) {
+      console.log("erreur dans la supression du post");
+      return res.send({ message: "error" });
+    }
+
+    if (deleteClass) {
+      console.log("classe supprimer avec succes");
+      return res.status(200).send({message: "ok"})
+    }
+  } catch (err) {
+    console.log(err);
+    return res.send({ message: "JWT error" });
   }
 }

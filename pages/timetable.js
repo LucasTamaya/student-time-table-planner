@@ -8,28 +8,53 @@ import getDay from "date-fns/getDay";
 import { useEffect, useState } from "react";
 import { RRule, RRuleSet, rrulestr } from "rrule"; //package afin de créer les events de façon récurente
 import { getHours } from "date-fns";
-
+import Loading from "../components/Loading";
 
 export default function TimeTable() {
   const [classes, setClasses] = useState();
-  // const [events, setEvents] = useState();
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // variable qui va stocker toutes les dates
   const evenements = [];
   // tableau contenant les object afin de maper pour events dans le calendarF
   let recurringEvents = [];
 
-  useEffect(() => {
-    fetch(
+  const fetching = async () => {
+    const res = await fetch(
       `http://localhost:3000/api/timetable/${localStorage.getItem(
         "accessToken"
-      )}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setClasses(data);
-      })
-      .catch((err) => console.log(err));
+      )}`,
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("accessToken"),
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    // si erreur avec le JWT
+    if (data.message === "JWT error") {
+      setErrorMessage("Error, you must be connected");
+      setLoading(!loading);
+    }
+
+    // si erreur pendant le fetch
+    if (data.message === "Fetch error") {
+      setErrorMessage("Internal server error during the fetch of the data");
+      setLoading(!loading);
+    }
+
+    // si aucune erreur
+    if (!data.message) {
+      setClasses(data);
+      setLoading(!loading);
+    }
+  };
+
+  useEffect(() => {
+    fetching();
   }, []);
 
   // définit le format de date selon un pays voulu
@@ -69,7 +94,7 @@ export default function TimeTable() {
     newObj = evenements.map((y, index) => ({
       title: classes[index].faculty,
       start: y,
-      end: y, /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/ 
+      end: y /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/,
     }));
     console.log(newObj);
   }
@@ -80,7 +105,7 @@ export default function TimeTable() {
         x.start.map((y, index) => ({
           title: x.title,
           start: x.start[index],
-          end: x.end[index], /*!!!!!!!!!!!!!!!!!!*/
+          end: x.end[index] /*!!!!!!!!!!!!!!!!!!*/,
         }))
       );
     });
@@ -90,16 +115,22 @@ export default function TimeTable() {
   return (
     <>
       <Navbar />
-      <div>
-        <h1 className="text-2xl text-center font-bold">Timetable</h1>
-        <Calendar
-          localizer={localizer}
-          events={recurringEvents.flat()}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ margin: "20px", height: 500 }}
-        />
-      </div>
+      {loading && <Loading />}
+      {errorMessage && (
+        <h2 className="text-2xl text-center font-bold">{errorMessage}</h2>
+      )}
+      {classes && (
+        <div>
+          <h1 className="text-2xl text-center font-bold">Timetable</h1>
+          <Calendar
+            localizer={localizer}
+            events={recurringEvents.flat()}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ margin: "20px", height: 500 }}
+          />
+        </div>
+      )}
     </>
   );
 }

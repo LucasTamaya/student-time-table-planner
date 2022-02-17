@@ -2,30 +2,36 @@ import { connectToDatabase } from "../../../util/mongodb";
 import NextCors from "nextjs-cors";
 const jwt = require("jsonwebtoken");
 
-
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
-  
-  const accessToken = req.query.id;
 
-  const authenticatedStudent = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+  console.log(req);
 
-    if(authenticatedStudent){
-        // const projection = {projection: {_id: 0, rollNo: 0, name: 0, classes: 1, password: 0}} afin de juste recuperer le tableau classes
+  const token = req.headers["x-access-token"]
 
-        const data = await db.collection("students").find({rollNo: authenticatedStudent}).toArray();
+  try {
+    const authenticatedStudent = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-        const selectedClasses = data[0].classes;
+    const data = await db
+      .collection("students")
+      .find({ rollNo: authenticatedStudent })
+      .toArray();
 
-        if(selectedClasses){
-            console.log("Voila les classes selectionner", selectedClasses)
-            return res.status(200).json(selectedClasses)
-        } else {
-            return res.status(200).send({error: true})
-        }
-    } else {
-        console.log("JWT error signature")
-        return res.status(500)
+    const selectedClasses = data[0].classes;
+
+    if (!selectedClasses) {
+      return res.send({ message: "Fetch error" });
     }
 
+    if (selectedClasses) {
+      //   console.log("Voila les classes selectionner", selectedClasses);
+      return res.status(200).json(selectedClasses);
+    }
+  } catch (err) {
+    console.log(err);
+    return res.send({ message: "JWT error" });
+  }
 }

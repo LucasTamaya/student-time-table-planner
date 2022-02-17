@@ -1,4 +1,4 @@
-import {connectToDatabase} from "../../../../util/mongodb"
+import { connectToDatabase } from "../../../../util/mongodb";
 import NextCors from "nextjs-cors";
 // import { ObjectId } from "mongodb";
 const mongodb = require("mongodb");
@@ -6,13 +6,15 @@ const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
-  const accessToken = req.query.studentId;
-  const authenticatedStudent = jwt.verify(
-    accessToken,
-    process.env.ACCESS_TOKEN_SECRET
-  );
 
-  if (authenticatedStudent) {
+  const token = req.headers["x-access-token"];
+
+  try {
+    const authenticatedStudent = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET
+    );
+
     //   classes sélectionnées par l'etudiant
     const dataOne = await db
       .collection("students")
@@ -22,6 +24,13 @@ export default async function handler(req, res) {
     //   toutes les classes
     const dataTwo = await db.collection("classes").find({}).toArray();
 
+    // si erreur dans le fetch
+    if (!dataOne && !dataTwo) {
+      console.log("erreur pendant le fetch");
+      return res.send({ message: "Fetch error" });
+    }
+
+    // si aucune erreur
     if (dataOne && dataTwo) {
       // conversion de la data brute
       const selectedClassesId = dataOne[0].classes.map(
@@ -37,25 +46,15 @@ export default async function handler(req, res) {
           // si l'id est identique, on ajoute la classe au tableau
           if (JSON.stringify(y._id) === JSON.stringify(x)) {
             result.push(y);
-            // console.log("valeur egale !!!!");
-            // sinon on ne fait rien
-          } else {
-            // console.log("valeur: ", typeof y._id, "filtre: ", typeof x);
-            // console.log("valeur differente");
           }
         });
       });
       //   on renvoit le tableau au front
-      console.log(result)
+      // console.log(result);
       return res.status(200).json(result);
-    } else {
-      console.log("erreur in the fetch");
-      return res.status(500);
     }
-  }
-
-  if (!authenticatedStudent) {
-    console.log("erreur in the fetch");
-    return res.status(500);
+  } catch (err) {
+    console.log(err);
+    return res.send({ message: "JWT error" });
   }
 }

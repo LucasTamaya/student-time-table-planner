@@ -3,26 +3,59 @@ import Navbar from "./Navbar";
 import CloseIcon from "@mui/icons-material/Close";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import PopUp from "./PopUp";
+import Loading from "./Loading";
 const axios = require("axios");
 
-const Classes = ({ data }) => {
+const Classes = ({ classes, classesErrorMessage }) => {
   const [currentClasses, setCurrentClasses] = useState([]); //tableau vide sinon
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [popUp, setPopUp] = useState(false);
-  
-  const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+  const fetching = async () => {
+    // récupère les classes deja selectionnées dans la base donnée
+    const res = await fetch(
+      `http://localhost:3000/api/student/${localStorage.getItem(
+        "accessToken"
+      )}`,
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("accessToken"),
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    // si erreur avec JWT
+    if (data.message === "JWT error") {
+      setErrorMessage("Error, you must be connected");
+      setLoading(!loading);
+    }
+    // si erreur pendant le fetch
+    if (data.message === "Fetch error") {
+      setErrorMessage("Internal server error during the fetch of the data");
+      setLoading(!loading);
+    }
+    // si aucune erreur
+    if (!data.message) {
+      setCurrentClasses(data);
+      setLoading(!loading);
+    }
+  };
+
+  const week = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   useEffect(() => {
-    // récupère les classes deja selectionnées dans la base donnée
-    fetch(
-      `http://localhost:3000/api/student/${localStorage.getItem("accessToken")}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setCurrentClasses(data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+    fetching();
   }, []);
 
   const selectedClasses = async (id) => {
@@ -47,7 +80,7 @@ const Classes = ({ data }) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "x-access-token": localStorage.getItem("accessToken"),
         },
       }
     );
@@ -68,16 +101,17 @@ const Classes = ({ data }) => {
     <>
       <Navbar />
       <PopUp popUp={popUp} setPopUp={setPopUp} />
-      {loading && (
-        <div className="flex justify-center items-center gap-x-2">
-          <h2 className="text-center text-4xl font-bold">Loading</h2>
-          <AutorenewIcon className="animate-spin text-4xl" />
-        </div>
+      {loading && <Loading />}
+
+      {classesErrorMessage && (
+        <h2 className="text-2xl text-center font-bold">
+          {classesErrorMessage}
+        </h2>
       )}
 
-      {/* {currentClasses.length === 0 && (
-        <h2>You haven't selected any classes yet</h2>
-      )} */}
+      {errorMessage && (
+        <h2 className="text-2xl text-center font-bold">{errorMessage}</h2>
+      )}
 
       {currentClasses.length > 0 && (
         <div className="flex flex-col items-center">
@@ -99,10 +133,9 @@ const Classes = ({ data }) => {
           </button>
         </div>
       )}
-      {data && (
+      {classes && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {console.log(data)}
-          {data.map((classe) => (
+          {classes.map((classe) => (
             <div
               className="bg-blue-500 rounded-md w-72 h-72 mx-auto my-10 p-4 flex flex-col items-center justify-center gap-y-5 hover:shadow-2xl shadow-black-900"
               key={classe._id}
@@ -110,9 +143,12 @@ const Classes = ({ data }) => {
               <h1 className="text-2xl font-bold text-white text-center">
                 {classe.faculty} Class
               </h1>
-              <p className="text-white">{week[new Date(classe.start).getDay()]}</p>
               <p className="text-white">
-                From {new Date(classe.start).getHours()}am to {new Date(classe.end).getHours()}am
+                {week[new Date(classe.start).getDay()]}
+              </p>
+              <p className="text-white">
+                From {new Date(classe.start).getHours()}am to{" "}
+                {new Date(classe.end).getHours()}am
               </p>
               <button
                 className="transition ease-out border border-white text-white p-2 rounded-xl hover:scale-105"
