@@ -14,10 +14,10 @@ export default async function handler(req, res) {
   });
 
   const newClass = await db.collection("classes").insertOne({
-    courseCode: "62040c6a1155f125a51e2857",
-    faculty: "Vocabulary",
-    start: new Date(2022, 0, 5, 13),
-    end: new Date(2022, 0, 5, 14)
+    courseCode: "620e22cb5fd8351089522981",
+    faculty: "Volley Ball",
+    start: new Date(2022, 0, 7, 10),
+    end: new Date(2022, 0, 7, 11)
   });
 
   // console.log(newClass);

@@ -8,7 +8,7 @@ import getDay from "date-fns/getDay";
 import { useEffect, useState } from "react";
 import { RRule, RRuleSet, rrulestr } from "rrule"; //package afin de créer les events de façon récurente
 import { getHours } from "date-fns";
-import { zhCN } from "date-fns/locale";
+
 
 export default function TimeTable() {
   const [classes, setClasses] = useState();
@@ -69,7 +69,7 @@ export default function TimeTable() {
     newObj = evenements.map((y, index) => ({
       title: classes[index].faculty,
       start: y,
-      end: y,
+      end: y, /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/ 
     }));
     console.log(newObj);
   }
@@ -80,7 +80,7 @@ export default function TimeTable() {
         x.start.map((y, index) => ({
           title: x.title,
           start: x.start[index],
-          end: x.end[index]+1,
+          end: x.end[index], /*!!!!!!!!!!!!!!!!!!*/
         }))
       );
     });
