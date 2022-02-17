@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
-  console.log(req);
+//   console.log(req);
 
   const accessToken = req.query.studentId;
   const authenticatedStudent = jwt.verify(
