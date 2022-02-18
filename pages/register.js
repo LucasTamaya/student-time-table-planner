@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+const template = require("../util/template")
 const axios = require("axios");
 
 export default function Register() {
@@ -16,7 +17,7 @@ export default function Register() {
     event.preventDefault();
     // enregistre nouvel etudiant
     axios
-      .post("http://localhost:3000/api/auth/register", {
+      .post(`${template}api/auth/register`, {
         rollNo: rollNo,
         name: name,
         classes: [],

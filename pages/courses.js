@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CourseWidget from "../components/CourseWidget";
 import Navbar from "../components/Navbar";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+const template = require("../util/template")
 const axios = require("axios");
 
 export default function Courses() {
@@ -11,15 +12,13 @@ export default function Courses() {
 
   const fetching = async () => {
     // envoit de la requete vers l'api + vérification du JWT
-    const res = await fetch("http://localhost:3000/api/courses", {
+    const res = await fetch(`${template}api/courses`, {
       headers: {
         "x-access-token": localStorage.getItem("accessToken"),
       },
     });
 
     const data = await res.json();
-
-    console.log(data);
 
     // si problème avec le JWT, on alerte l'utilisateur
     if (data.message === "JWT error") {
@@ -75,14 +74,3 @@ export default function Courses() {
     </>
   );
 }
-
-// export const getServerSideProps = async (context) => {
-//   const res = await axios.get("http://localhost:3000/api/courses");
-//   const data = await res.data;
-
-//   return {
-//     props: {
-//       data: data,
-//     },
-//   };
-// };

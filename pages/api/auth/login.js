@@ -1,18 +1,20 @@
 import { connectToDatabase } from "../../../util/mongodb"; //connexion à mongoDB optimisé
-import NextCors from "nextjs-cors";
+import { nextCors } from "../../../util/cors";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
+  await nextCors()
+
   // // middle type CORS
-  await NextCors(req, res, {
-    // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
+  // await NextCors(req, res, {
+  //   // Options
+  //   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  //   origin: "*",
+  //   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  // });
 
   const { rollNo, password } = req.body;
 
@@ -37,8 +39,8 @@ export default async function handler(req, res) {
   if (isMatch) {
     console.log("mot de passe correct");
     const accessToken = jwt.sign(rollNo, process.env.ACCESS_TOKEN_SECRET); //on crée un JWT
-    console.log("access token", accessToken)
-    return res.status(200).json({accessToken: accessToken, error: false}); //on retourne un message de succès
+    console.log("access token", accessToken);
+    return res.status(200).json({ accessToken: accessToken, error: false }); //on retourne un message de succès
     // sinon, on renvoit un message d'erreur
   } else {
     console.log("mot de passe incorrect");

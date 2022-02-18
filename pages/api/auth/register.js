@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../../util/mongodb"; //connexion à mongoDB optimisé
-import NextCors from "nextjs-cors";
+import { nextCors } from "../../../util/cors";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -7,12 +7,7 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // // middle type CORS
-  await NextCors(req, res, {
-    // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
+  await nextCors();
 
   // récupère les données du client
   const { rollNo, name, classes, password } = req.body;

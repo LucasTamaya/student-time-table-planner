@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import Footer from "../components/Footer";
+const template = require("../util/template");
 
 export default function MyClasses() {
   const [myClasses, setMyClasses] = useState();
@@ -26,15 +27,8 @@ export default function MyClasses() {
 
     // met a jour la liste des classes à afficher coté frontend
     setMyClasses(updateClasses);
-    // const deleteClass = await axios.delete(
-    //   `http://localhost:3000/api/class/${localStorage.getItem(
-    //     "accessToken"
-    //   )}/${classeId}`
-    // );
     const res = await fetch(
-      `http://localhost:3000/api/class/${localStorage.getItem(
-        "accessToken"
-      )}/${classeId}`,
+      `${template}api/class/${localStorage.getItem("accessToken")}/${classeId}`,
       {
         method: "DELETE",
         headers: {
@@ -56,7 +50,7 @@ export default function MyClasses() {
 
   const fetching = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/class/${localStorage.getItem("accessToken")}`,
+      `${template}api/class/${localStorage.getItem("accessToken")}`,
       {
         headers: {
           "x-access-token": localStorage.getItem("accessToken"),
@@ -148,7 +142,6 @@ export default function MyClasses() {
           </div>
         )}
       </div>
-      {/* <Footer /> */}
     </>
   );
 }

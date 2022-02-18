@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
+const template = require("../util/template")
 const axios = require("axios");
 
 export default function Login() {
@@ -13,7 +14,7 @@ export default function Login() {
   function handleForm(event) {
     event.preventDefault();
     axios
-      .post("http://localhost:3000/api/auth/login", {
+      .post(`${template}api/auth/login`, {
         rollNo: rollNo,
         password: password,
       })

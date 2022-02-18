@@ -6,9 +6,9 @@ import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import { useEffect, useState } from "react";
-import { RRule, RRuleSet, rrulestr } from "rrule"; //package afin de créer les events de façon récurente
-import { getHours } from "date-fns";
+import { RRule } from "rrule"; //package afin de créer les events de façon récurente
 import Loading from "../components/Loading";
+const template = require("../util/template");
 
 export default function TimeTable() {
   const [classes, setClasses] = useState();
@@ -22,9 +22,7 @@ export default function TimeTable() {
 
   const fetching = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/timetable/${localStorage.getItem(
-        "accessToken"
-      )}`,
+      `${template}api/timetable/${localStorage.getItem("accessToken")}`,
       {
         headers: {
           "x-access-token": localStorage.getItem("accessToken"),

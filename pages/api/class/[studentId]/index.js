@@ -1,11 +1,13 @@
 import { connectToDatabase } from "../../../../util/mongodb";
-import NextCors from "nextjs-cors";
-// import { ObjectId } from "mongodb";
+import { nextCors } from "../../../../util/cors";
 const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
+
+  // CORS middleware
+  await nextCors();
 
   const token = req.headers["x-access-token"];
 

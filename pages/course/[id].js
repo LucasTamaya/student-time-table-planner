@@ -1,5 +1,6 @@
 import Classes from "../../components/Classes";
 import { useState, useEffect } from "react";
+const template = require("../../util/template")
 
 const Course = ({ id }) => {
   const [classes, setClasses] = useState();
@@ -7,7 +8,7 @@ const Course = ({ id }) => {
 
   const fetching = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/classes/${id}`,
+      `${template}api/classes/${id}`,
       {
         headers: {
           "x-access-token": localStorage.getItem("accessToken"),
