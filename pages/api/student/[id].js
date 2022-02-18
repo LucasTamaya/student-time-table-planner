@@ -6,9 +6,9 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // CORS middleware
-  await nextCors();
+  await nextCors(req, res);
 
-  console.log(req);
+  // console.log(req);
 
   const token = req.headers["x-access-token"]
 

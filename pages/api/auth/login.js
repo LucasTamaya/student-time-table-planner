@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
-  await nextCors()
+  await nextCors(req, res)
 
   // // middle type CORS
   // await NextCors(req, res, {

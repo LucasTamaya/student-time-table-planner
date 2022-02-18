@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // CORS middleware
-  await nextCors();
+  await nextCors(req, res);
 
   //   JWT
   const token = req.headers["x-access-token"];

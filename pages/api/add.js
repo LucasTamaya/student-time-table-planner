@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // middle type CORS
-  await nextCors();
+  await nextCors(req, res);
 
   const newClass = await db.collection("classes").insertOne({
     courseCode: "620e22cb5fd8351089522981",
