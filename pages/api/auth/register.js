@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { db } = await connectToDatabase();
 
   // // middle type CORS
-  await nextCors();
+  await nextCors(req, res);
 
   // récupère les données du client
   const { rollNo, name, classes, password } = req.body;
